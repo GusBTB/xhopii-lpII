@@ -11,8 +11,8 @@ import {
     rateLimitMiddleware,
     morganMiddleware,
 } from "./middlewares/middlewares.js";
-import router from "./routes/routes.js";
 import Database from "./config/db.js";
+import GlobalRouter from "./routes/index.js";
 
 //Carregar as variáveis de ambiente do arquivo .env
 dotenv.config();
@@ -37,7 +37,7 @@ app.use(compressionMiddlewware);
 //app.use(morganMiddleware);
 
 //Registrando rotas (endpoints)
-app.use(router);
+GlobalRouter.registerRoutes(app);
 
 app.listen(port, () => {
     console.log(`Servidor ativo rodando na porta ${port}`);

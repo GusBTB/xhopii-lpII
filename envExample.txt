@@ -1,6 +1,6 @@
 #.env = armazena variáveis de configuração e credenciais sensíveis da aplicação.
 PORT=8080
-MONGODB_URI=mongodb://localhost:27018/carros_db
-#MONGODB_URI=mongodb://admin:12345@localhost:27018/carros_db
-#MONGODB_URI=mongodb://admin:${MONGO_PASSWORD}@localhost:27018/carros_bd
+MONGODB_URI=mongodb://localhost:27018/xhopii
+#MONGODB_URI=mongodb://admin:12345@localhost:27018/xhopii
+#MONGODB_URI=mongodb://admin:${MONGO_PASSWORD}@localhost:27018/xhopii
 #MONGODB_URI=mongodb+srv://brunoslima4:12345@cluster-teste.qfy6l.mongodb.net/?retryWrites=true&w=majority&appName=Cluster-teste
