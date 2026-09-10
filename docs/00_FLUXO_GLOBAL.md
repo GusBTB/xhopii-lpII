@@ -382,7 +382,7 @@ flowchart LR
 O `login.html` original envia o formulário incorretamente para `/clientes`. Isso precisa ser alterado para:
 
 ```html
-<form method="POST" action="/login">
+<form method="POST" action="/login"></form>
 ```
 
 Os nomes `inputEmailLog` e `inputSenhaLog` podem ser lidos diretamente no `AuthController`.
@@ -611,15 +611,15 @@ Pessoa 2 pode consolidar o `README.md`, mas todos devem revisar.
 
 ## 6. Arquivos compartilhados: regra para não gerar conflito
 
-| Arquivo | Dono de integração | Quem pode propor mudanças |
-|---|---|---|
-| `server.js` | Pessoa 1 | Todos |
-| `routes/routes.js` | Pessoa 1 | Todos |
-| `middlewares/middlewares.js` | Pessoa 1 na integração; Pessoa 2 fornece JWT | Pessoas 1 e 2 |
-| `package.json` | Pessoa 1 | Todos |
-| `README.md` | Pessoa 2 | Todos |
-| `home.html` | Pessoa 1 | Pessoa 3 se precisar de Produto |
-| menus repetidos nas views | Pessoa 1 no final | Todos |
+| Arquivo                      | Dono de integração                           | Quem pode propor mudanças       |
+| ---------------------------- | -------------------------------------------- | ------------------------------- |
+| `server.js`                  | Pessoa 1                                     | Todos                           |
+| `routes/routes.js`           | Pessoa 1                                     | Todos                           |
+| `middlewares/middlewares.js` | Pessoa 1 na integração; Pessoa 2 fornece JWT | Pessoas 1 e 2                   |
+| `package.json`               | Pessoa 1                                     | Todos                           |
+| `README.md`                  | Pessoa 2                                     | Todos                           |
+| `home.html`                  | Pessoa 1                                     | Pessoa 3 se precisar de Produto |
+| menus repetidos nas views    | Pessoa 1 no final                            | Todos                           |
 
 Assim, as Pessoas 2 e 3 passam a maior parte do tempo criando arquivos próprios, com pouca disputa de merge.
 
