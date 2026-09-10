@@ -1,20 +1,32 @@
 {
-  "name": "xhopii-lpii",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/GusBTB/xhopii-lpII.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/GusBTB/xhopii-lpII/issues"
-  },
-  "homepage": "https://github.com/GusBTB/xhopii-lpII#readme"
+    "name": "xhopii-lpii",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "nodemon server.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/GusBTB/xhopii-lpII.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/GusBTB/xhopii-lpII/issues"
+    },
+    "homepage": "https://github.com/GusBTB/xhopii-lpII#readme",
+    "dependencies": {
+        "nodemon": "^3.1.14",
+        "compression": "^1.8.0",
+        "dotenv": "^16.4.7",
+        "ejs": "^3.1.10",
+        "express": "^4.21.2",
+        "express-rate-limit": "^7.5.0",
+        "helmet": "^8.0.0",
+        "mongoose": "^8.23.0",
+        "morgan": "^1.10.0"
+    }
 }
