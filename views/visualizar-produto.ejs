@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="/css/style.css">
     <link rel="icon" href="/img/logo.png" type="image/png">
-    <title>Xhopii - Cadastro Produto</title>
+    <title>Xhopii - Ver Produtos</title>
 </head>
 <body>
 
@@ -26,23 +26,37 @@
             <li><a href="/produto/cadastrar">Cadastro Produto</a></li>
             <li><a href="/clientes">Ver Clientes</a></li>
             <li><a href="#">Ver Funcionários</a></li>
-            <li><a href="#">Ver Produtos</a></li>
+            <li><a href="/produtos/visualizar">Ver Produtos</a></li>
         </ul>
     </nav>
 
-    <section class="conteudo-cadastro">
-        <section class="conteudo-formulario-cadastro">
-            <form method="POST" action="/produtos">
-                <label>Cadastrar Produto</label>
-                <input type="text" placeholder="Nome" name="nome">
-                <input type="text" placeholder="Fabricante" name="fabricante">
-                <input type="text" placeholder="Descrição" name="descricao">
-                <input type="text" placeholder="Valor" name="valor">
-                <input type="text" placeholder="Quantidade" name="quantidade">
-                <label id="lbl-arquivo" for="files">Selecionar foto do produto:</label>
-                <input type="file" name="inputFoto">
-                <input id="botao" type="submit" value="Cadastrar">
-            </form>
+    <section class="conteudo-ver">
+        <section class="conteudo-ver-descobertas">
+            <section class="conteudo-ver-descobertas-titulo">
+                <h1>Produtos</h1>
+            </section>
+            <section class="conteudo-ver-descobertas-produto">
+                <% produtos.forEach(produto => { %>
+                    <section class="ver-produto-item-grid">
+                        <section class="ver-produto-detalhes">
+                            <img src="<%= produto.foto || '/img/produto1.png' %>">
+                            <p id="nome-produto"><%= produto.nome %></p>
+                            <section class="ver-grupo-dupla-grid">
+                                <h5 id="titulo-produto">Fabricante: </h5>
+                                <p id="info-produto"><%= produto.fabricante %></p>
+                            </section>
+                            <section class="ver-grupo-dupla-grid">
+                                <h5 id="titulo-produto">Descrição:</h5>
+                                <p id="info-produto"><%= produto.descricao %></p>
+                            </section>
+                            <section class="ver-produto-item-info">
+                                <p id="valor">R$ <%= produto.valor.toFixed(2).replace('.', ',') %></p>
+                                <p id="disponiveis"><%= produto.quantidade %> disponíveis</p>
+                            </section>
+                        </section>
+                    </section>
+                <% }); %>
+            </section>
         </section>
     </section>
 
@@ -80,7 +94,7 @@
                     <img id="img-pagamento" src="/img/logo-american-express.png">
                     <img id="img-pagamento" src="/img/logo-boleto.png">
                     <img id="img-pagamento" src="/img/logo-pix.png">
-                </section>               
+                </section>
             </section>
             <section class="conteudo-rodape">
                 <h5 id="rodape-titulo">Siga-nos</h5>
