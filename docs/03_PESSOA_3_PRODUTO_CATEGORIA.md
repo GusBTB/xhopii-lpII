@@ -507,3 +507,82 @@ No projeto já mergeado:
 [ ] Reteste Produto/Categoria após merge
 [ ] Funcionalidade extra somente se obrigatório já estiver 100%
 ```
+
+---
+
+## Status de implementação — Pessoa 3 (ATUALIZADO)
+
+> Este bloco foi gerado após a implementação e testes. Serve para que os outros integrantes (e as IAs deles) saibam exatamente o que foi entregue e o que falta integrar.
+
+### Arquivos criados pela Pessoa 3
+
+```text
+models/ProdutoSchema.js       -> nome(req), fabricante, descricao, valor(Number,req), quantidade(Number,req), foto; timestamps
+models/Produto.js             -> constructor + save + findAll + findById + findByNome + update + delete
+models/CategoriaSchema.js     -> nome(req+unique), descricao; timestamps
+models/Categoria.js           -> constructor + save + findAll + findById + findByNome + update + delete
+controllers/ProdutoController.js -> 5 métodos REST + renderCreateProduto + renderAllProdutos
+controllers/CategoriaController.js -> 5 métodos REST (sem EJS, conforme contrato)
+views/visualizar-produto.ejs  -> cards gerados com produtos.forEach(...) a partir de ver-produto.html
+```
+
+### Arquivos preenchidos (existiam como scaffold vazio da base)
+
+```text
+routes/rest/produtos.js   -> GET/POST /produtos, GET/PUT/DELETE /produtos/:id
+routes/web/produtos.js    -> GET /produto/cadastrar, GET /produtos/visualizar
+routes/rest/categorias.js -> GET/POST /categorias, GET/PUT/DELETE /categorias/:id
+```
+
+### Arquivos alterados
+
+```text
+views/cadastrar-produto.html -> action="/produtos"; name dos inputs: nome, fabricante, descricao, valor, quantidade (inputFoto mantido, sem upload)
+utils/pathUtils.js           -> CORREÇÃO DE BUG DE BASE (ver aviso abaixo)
+docs/03_PESSOA_3_PRODUTO_CATEGORIA.md -> este status
+```
+
+### Rotas que a Pessoa 1 precisa integrar em `routes/index.js`
+
+```text
+imports:
+  import WebProdutosRouter from "./web/produtos.js";
+  import RestProdutosRouter from "./rest/produtos.js";
+  import RestCategoriasRouter from "./rest/categorias.js";
+
+registros (após RestClientesRouter):
+  app.use(WebProdutosRouter);
+  app.use(RestProdutosRouter);
+  app.use(RestCategoriasRouter);
+```
+
+Dependências de menu geradas por Produto:
+
+```text
+"Ver Produtos" -> /produtos/visualizar   (já aplicado no visualizar-produto.ejs)
+```
+
+### Regras de negócio implementadas (para os testes dos colegas)
+
+- `valor` e `quantidade`: aceitam vírgula decimal (ex.: `12,50`), rejeitam não numérico com 400;
+- campos obrigatórios (`nome`, `valor`, `quantidade`) vazios -> 400;
+- `nome` duplicado -> 400 tanto no create quanto no update (update ignora o próprio registro);
+- no update, campo enviado vazio NÃO altera o valor existente;
+- `id` fora do formato ObjectId -> 400; id válido inexistente -> 404;
+- categoria `nome` é `unique` no schema + checagem `findByNome` antes do save.
+
+### Testes executados (P3.8 e P3.13) — 51/51 passando
+
+Cobertos via script REST: criar/listar/buscar/atualizar/excluir de Produto e Categoria, duplicidade (create e update), campos obrigatórios ausentes, valor inválido, ID inválido, ID inexistente, form urlencoded, `GET /produto/cadastrar` e `GET /produtos/visualizar` refletindo o MongoDB com valor formatado `R$ X,XX`.
+
+O registro temporário usado nos testes foi **removido** de `routes/index.js`; a base está limpa para a Pessoa 1 consolidar.
+
+### ⚠️ AVISO à Pessoa 1 — bug corrigido em `utils/pathUtils.js`
+
+O `pathUtils.js` original removia a barra inicial do caminho e apontava para a pasta `utils/`, o que fazia `express.static(assets)`, `res.sendFile(views/...)` e o `access.log` do morgan quebrarem (`ENOENT`) e o servidor nem subir. Correção aplicada:
+
+```js
+const __dirname = path.dirname(import.meta.dirname); // raiz do projeto (absoluto)
+```
+
+Isso estava quebrando TAMBÉM o Cliente e o login do P1 (assets 404 / sendFile 500). Conferir se a branch de P1 já contém essa correção ao consolidar.
