@@ -1,12 +1,35 @@
 import express from "express";
 import CategoriaController from "../../controllers/CategoriaController.js";
+import {
+    exigirLogin,
+    exigirFuncionario,
+} from "../../middlewares/authMiddlewares.js";
 
 const router = express.Router();
 
-router.get("/categorias", CategoriaController.getAllCategorias);
-router.get("/categorias/:id", CategoriaController.getCategoriaById);
-router.post("/categorias", CategoriaController.createCategoria);
-router.put("/categorias/:id", CategoriaController.updateCategoria);
-router.delete("/categorias/:id", CategoriaController.deleteCategoria);
+// Leitura: qualquer usuario autenticado.
+router.get("/api/categorias", exigirLogin, CategoriaController.getAllCategorias);
+router.get(
+    "/api/categorias/:id",
+    exigirLogin,
+    CategoriaController.getCategoriaById,
+);
+
+// Escrita: somente funcionarios.
+router.post(
+    "/api/categorias",
+    exigirFuncionario,
+    CategoriaController.createCategoria,
+);
+router.put(
+    "/api/categorias/:id",
+    exigirFuncionario,
+    CategoriaController.updateCategoria,
+);
+router.delete(
+    "/api/categorias/:id",
+    exigirFuncionario,
+    CategoriaController.deleteCategoria,
+);
 
 export default router;

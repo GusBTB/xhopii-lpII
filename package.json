@@ -2,11 +2,12 @@
     "name": "xhopii-lpii",
     "version": "1.0.0",
     "description": "",
-    "main": "index.js",
+    "main": "server.js",
     "type": "module",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "nodemon server.js"
+        "start": "nodemon server.js",
+        "seed": "node seed.js"
     },
     "repository": {
         "type": "git",
@@ -20,6 +21,7 @@
     },
     "homepage": "https://github.com/GusBTB/xhopii-lpII#readme",
     "dependencies": {
+        "bcryptjs": "^3.0.3",
         "compression": "^1.8.0",
         "cookie-parser": "^1.4.7",
         "dotenv": "^16.4.7",
@@ -30,6 +32,7 @@
         "jsonwebtoken": "^9.0.3",
         "mongoose": "^8.23.0",
         "morgan": "^1.10.0",
+        "multer": "^2.4.0",
         "nodemon": "^3.1.14"
     }
 }

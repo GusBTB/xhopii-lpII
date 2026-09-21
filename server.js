@@ -6,6 +6,7 @@ import {
     staticMiddleware,
     urlencodedMiddleware,
     jsonMiddleware,
+    cookieParserMiddleware,
     securityMiddleware,
     compressionMiddlewware,
     rateLimitMiddleware,
@@ -31,6 +32,7 @@ app.set("view engine", "ejs"); //Definindo o motor de template EJS
 app.use(staticMiddleware);
 app.use(urlencodedMiddleware);
 app.use(jsonMiddleware);
+app.use(cookieParserMiddleware);
 app.use(securityMiddleware);
 app.use(compressionMiddlewware);
 //app.use(rateLimitMiddleware);

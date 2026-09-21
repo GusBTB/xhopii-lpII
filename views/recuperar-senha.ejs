@@ -4,48 +4,27 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="/css/style.css">
     <link rel="icon" href="/img/logo.png" type="image/png">
-    <title>Xhopii - Cadastro Funcionario</title>
+    <title>Xhopii - Recuperar Senhar</title>
 </head>
 <body>
-
-    <header>
-        <section id="cabecalho-logo">
+    <header class="cabecalho-login">
+        <section id="cabecalho-login-logo">
             <img src="/img/logo.png">
             <h1>Xhopii</h1>
+            <p>Redefinir senha</p>
         </section>
-        <section id="cabecalho-logout">
-            <a href="/login">Sair</a>
+        <section id="cabecalho-login-ajuda">
+            <p>Precisa de ajuda?</p>
         </section>
     </header>
 
-    <nav class="menu-horizontal">
-        <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/clientes/cadastrar">Cadastro Cliente</a></li>
-            <li><a href="/funcionario/cadastrar">Cadastro Funcionário</a></li>
-            <li><a href="/produto/cadastrar">Cadastro Produto</a></li>
-            <li><a href="/clientes">Ver Clientes</a></li>
-            <li><a href="#">Ver Funcionários</a></li>
-            <li><a href="/produtos/visualizar">Ver Produtos</a></li>
-        </ul>
-    </nav>
-
-    <section class="conteudo-cadastro">
-        <section class="conteudo-formulario-cadastro">
-            <form method="POST" action="">
-                <label>Cadastrar Funcionário</label>
-                <input type="text" placeholder="Nome" name="inputNomeFunc">
-                <input type="text" placeholder="Sobrenome" name="inputSobrenomeFunc">
-                <input type="text" placeholder="CPF" name="inputCPFFunc">
-                <input type="date" placeholder="Data Nascimento" name="inputDataNascFunc">
-                <input type="text" placeholder="Telefone" name="inputTelefoneFunc">
-                <input type="text" placeholder="Cargo / Função" name="inputCargoFunc">
-                <input type="text" placeholder="Salário" name="inputSalarioFunc">
-                <input type="text" placeholder="Email" name="inputEmailFunc">
-                <input type="password" placeholder="Senha" name="inputSenha">
-                <label id="lbl-arquivo" for="files">Selecionar foto de perfil:</label>
-                <input type="file" name="inputFoto">
-                <input id="botao" type="submit" value="Cadastrar">
+    <section class="conteudo-redefinir-senha">
+        <section class="form-redefinir-senha">
+            <a href="/login"><img src="/img/icon-back.png"></a>
+            <form class="form-redefinir" method="GET" action="/login">
+                <label id="label-log">Redefinir senha</label>
+                <input id="input-log" type="text" placeholder="Email" name="inputEmailLog">
+                <input id="botao-log" type="submit" value="Enviar">
             </form>
         </section>
     </section>

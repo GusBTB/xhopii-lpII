@@ -8,27 +8,7 @@
 </head>
 <body>
 
-    <header>
-        <section id="cabecalho-logo">
-            <img src="/img/logo.png">
-            <h1>Xhopii</h1>
-        </section>
-        <section id="cabecalho-logout">
-            <a href="/login">Sair</a>
-        </section>
-    </header>
-
-    <nav class="menu-horizontal">
-        <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/clientes/cadastrar">Cadastro Cliente</a></li>
-            <li><a href="/funcionario/cadastrar">Cadastro Funcionário</a></li>
-            <li><a href="/produto/cadastrar">Cadastro Produto</a></li>
-            <li><a href="/clientes">Ver Clientes</a></li>
-            <li><a href="#">Ver Funcionários</a></li>
-            <li><a href="/produtos/visualizar">Ver Produtos</a></li>
-        </ul>
-    </nav>
+<%- include('partials/menu') %>
 
     <section class="conteudo-ver">
         <section class="conteudo-ver-descobertas">

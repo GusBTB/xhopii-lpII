@@ -1,0 +1,32 @@
+<header>
+    <section id="cabecalho-logo">
+        <img src="/img/logo.png">
+        <h1>Xhopii</h1>
+    </section>
+    <section id="cabecalho-logout">
+        <% if (typeof usuario !== "undefined" && usuario) { %>
+            <a href="/logout">Sair (<%= usuario.nome %>)</a>
+        <% } else { %>
+            <a href="/login">Entrar</a>
+        <% } %>
+    </section>
+</header>
+
+<nav class="menu-horizontal">
+    <ul>
+        <li><a href="/">Home</a></li>
+        <% if (typeof usuario === "undefined" || !usuario) { %>
+            <li><a href="/clientes/cadastrar">Cadastrar-se</a></li>
+        <% } %>
+        <% if (typeof usuario !== "undefined" && usuario) { %>
+            <li><a href="/produtos/visualizar">Ver Produtos</a></li>
+        <% } %>
+        <% if (typeof usuario !== "undefined" && usuario && usuario.tipo === "funcionario") { %>
+            <li><a href="/clientes/cadastrar">Cadastro Cliente</a></li>
+            <li><a href="/funcionario/cadastrar">Cadastro Funcionário</a></li>
+            <li><a href="/produto/cadastrar">Cadastro Produto</a></li>
+            <li><a href="/clientes/visualizar">Ver Clientes</a></li>
+            <li><a href="/funcionarios/visualizar">Ver Funcionários</a></li>
+        <% } %>
+    </ul>
+</nav>

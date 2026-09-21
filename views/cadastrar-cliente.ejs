@@ -8,31 +8,14 @@
 </head>
 <body>
 
-    <header>
-        <section id="cabecalho-logo">
-            <img src="/img/logo.png">
-            <h1>Xhopii</h1>
-        </section>
-        <section id="cabecalho-logout">
-            <a href="/login">Sair</a>
-        </section>
-    </header>
-
-    <nav class="menu-horizontal">
-        <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/clientes/cadastrar">Cadastro Cliente</a></li>
-            <li><a href="/funcionario/cadastrar">Cadastro Funcionário</a></li>
-            <li><a href="/produto/cadastrar">Cadastro Produto</a></li>
-            <li><a href="/clientes">Ver Clientes</a></li>
-            <li><a href="#">Ver Funcionários</a></li>
-            <li><a href="/produtos/visualizar">Ver Produtos</a></li>
-        </ul>
-    </nav>
+<%- include('partials/menu') %>
 
     <section class="conteudo-cadastro">
         <section class="conteudo-formulario-cadastro">
-            <form method="POST" action="/clientes">
+            <form method="POST" action="/api/clientes" enctype="multipart/form-data">
+                <% if (typeof erro !== "undefined" && erro) { %>
+                    <p class="mensagem-erro" style="color:#d0021b;font-weight:bold;"><%= erro %></p>
+                <% } %>
                 <label>Cadastrar Cliente</label>
                 <input type="text" placeholder="Nome" name="nome">
                 <input type="text" placeholder="Sobrenome" name="sobrenome">
@@ -42,7 +25,7 @@
                 <input type="text" placeholder="Email" name="email">
                 <input type="password" placeholder="Senha" name="senha">
                 <label id="lbl-arquivo" for="files">Selecionar foto de perfil:</label>
-                <input type="file" name="inputFoto">
+                <input type="file" name="foto" accept="image/*">
                 <input id="botao" type="submit" value="Cadastrar">
             </form>
         </section>

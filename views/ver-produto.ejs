@@ -4,28 +4,39 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="/css/style.css">
     <link rel="icon" href="/img/logo.png" type="image/png">
-    <title>Xhopii - Recuperar Senhar</title>
+    <title>Xhopii - Produtos</title>
 </head>
 <body>
-    <header class="cabecalho-login">
-        <section id="cabecalho-login-logo">
-            <img src="/img/logo.png">
-            <h1>Xhopii</h1>
-            <p>Redefinir senha</p>
-        </section>
-        <section id="cabecalho-login-ajuda">
-            <p>Precisa de ajuda?</p>
-        </section>
-    </header>
 
-    <section class="conteudo-redefinir-senha">
-        <section class="form-redefinir-senha">
-            <a href="/login"><img src="/img/icon-back.png"></a>
-            <form class="form-redefinir" method="POST" action="home">
-                <label id="label-log">Redefinir senha</label>
-                <input id="input-log" type="text" placeholder="Email" name="inputEmailLog">
-                <input id="botao-log" type="submit" value="Enviar">
-            </form>
+<%- include('partials/menu') %>
+
+    <section class="conteudo-ver">
+        <section class="conteudo-ver-descobertas">
+            <section class="conteudo-ver-descobertas-titulo">
+                <h1>Produtos</h1>
+            </section>
+            <section class="conteudo-ver-descobertas-produto">
+                <% produtos.forEach(produto => { %>
+                    <section class="ver-produto-item-grid">
+                        <section class="ver-produto-detalhes">
+                            <img src="<%= produto.foto || '/img/produto1.png' %>">
+                            <p id="nome-produto"><%= produto.nome %></p>
+                            <section class="ver-grupo-dupla-grid">
+                                <h5 id="titulo-produto">Fabricante: </h5>
+                                <p id="info-produto"><%= produto.fabricante %></p>
+                            </section>
+                            <section class="ver-grupo-dupla-grid">
+                                <h5 id="titulo-produto">Descrição:</h5>
+                                <p id="info-produto"><%= produto.descricao %></p>
+                            </section>
+                            <section class="ver-produto-item-info">
+                                <p id="valor">R$ <%= produto.valor.toFixed(2).replace('.', ',') %></p>
+                                <p id="disponiveis"><%= produto.quantidade %> disponíveis</p>
+                            </section>
+                        </section>
+                    </section>
+                <% }); %>
+            </section>
         </section>
     </section>
 
@@ -63,7 +74,7 @@
                     <img id="img-pagamento" src="/img/logo-american-express.png">
                     <img id="img-pagamento" src="/img/logo-boleto.png">
                     <img id="img-pagamento" src="/img/logo-pix.png">
-                </section>               
+                </section>
             </section>
             <section class="conteudo-rodape">
                 <h5 id="rodape-titulo">Siga-nos</h5>

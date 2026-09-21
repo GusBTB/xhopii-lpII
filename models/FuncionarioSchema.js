@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 
-const ClienteSchema = new mongoose.Schema(
+const FuncionarioSchema = new mongoose.Schema(
     {
         nome: String,
         sobrenome: String,
@@ -12,6 +12,8 @@ const ClienteSchema = new mongoose.Schema(
         },
         dataNascimento: Date,
         telefone: String,
+        cargo: String,
+        salario: Number,
         email: {
             type: String,
             required: true,
@@ -33,7 +35,7 @@ const ClienteSchema = new mongoose.Schema(
 );
 
 // Hasheia a senha antes de gravar, sempre que ela mudar
-ClienteSchema.pre("save", async function (next) {
+FuncionarioSchema.pre("save", async function (next) {
     if (!this.isModified("senha")) {
         return next();
     }
@@ -42,4 +44,4 @@ ClienteSchema.pre("save", async function (next) {
     return next();
 });
 
-export default mongoose.model("Cliente", ClienteSchema);
+export default mongoose.model("Funcionario", FuncionarioSchema);

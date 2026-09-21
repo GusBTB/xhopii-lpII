@@ -1,9 +1,19 @@
-import path from "path";
-import __dirname from "../utils/pathUtils.js";
 import mongoose from "mongoose";
 import Produto from "../models/Produto.js";
+import { ehFormulario } from "../utils/requestUtils.js";
 
 export default class ProdutoController {
+    // Erro vindo de formulario volta para a tela; erro de API volta como JSON.
+    static responderErro(req, res, status, mensagem) {
+        if (ehFormulario(req)) {
+            return res
+                .status(status)
+                .render("cadastrar-produto", { erro: mensagem });
+        }
+
+        return res.status(status).json({ message: mensagem });
+    }
+
     static converterNumero(valor) {
         if (valor === undefined || valor === null) {
             return undefined;
@@ -97,39 +107,59 @@ export default class ProdutoController {
                 ProdutoController.converterNumero(quantidade);
 
             if (!nomeTratado) {
-                return res
-                    .status(400)
-                    .json({ message: "Nome do produto é obrigatório" });
+                return ProdutoController.responderErro(
+                    req,
+                    res,
+                    400,
+                    "Nome do produto é obrigatório",
+                );
             }
 
             if (valorConvertido === null) {
-                return res.status(400).json({ message: "Valor inválido" });
+                return ProdutoController.responderErro(
+                    req,
+                    res,
+                    400,
+                    "Valor inválido",
+                );
             }
 
             if (valorConvertido === undefined) {
-                return res
-                    .status(400)
-                    .json({ message: "Valor do produto é obrigatório" });
+                return ProdutoController.responderErro(
+                    req,
+                    res,
+                    400,
+                    "Valor do produto é obrigatório",
+                );
             }
 
             if (quantidadeConvertida === null) {
-                return res
-                    .status(400)
-                    .json({ message: "Quantidade inválida" });
+                return ProdutoController.responderErro(
+                    req,
+                    res,
+                    400,
+                    "Quantidade inválida",
+                );
             }
 
             if (quantidadeConvertida === undefined) {
-                return res
-                    .status(400)
-                    .json({ message: "Quantidade do produto é obrigatória" });
+                return ProdutoController.responderErro(
+                    req,
+                    res,
+                    400,
+                    "Quantidade do produto é obrigatória",
+                );
             }
 
             const produtoComMesmoNome = await Produto.findByNome(nomeTratado);
 
             if (produtoComMesmoNome) {
-                return res
-                    .status(400)
-                    .json({ message: "Já existe um produto com esse nome" });
+                return ProdutoController.responderErro(
+                    req,
+                    res,
+                    400,
+                    "Já existe um produto com esse nome",
+                );
             }
 
             const novoProduto = new Produto(
@@ -141,10 +171,21 @@ export default class ProdutoController {
                 foto,
             );
             const produtoSalvo = await novoProduto.save();
+
+            // Quem cadastra produto ja esta logado como funcionario.
+            if (ehFormulario(req)) {
+                return res.redirect("/produtos/visualizar");
+            }
+
             return res.status(201).json(produtoSalvo);
         } catch (error) {
             console.error("Erro ao cadastrar produto", error);
-            return res.status(500).send("Erro interno");
+            return ProdutoController.responderErro(
+                req,
+                res,
+                500,
+                "Erro interno ao cadastrar produto",
+            );
         }
     }
 
@@ -235,11 +276,21 @@ export default class ProdutoController {
     }
 
     //Implementação dos Renders das Páginas WEB
+
+    //Vitrine pública da loja - acessível sem login
+    static async renderVitrine(req, res) {
+        try {
+            const produtos = await Produto.findAll();
+            return res.render("ver-produto", { produtos: produtos });
+        } catch (error) {
+            console.error("Erro ao carregar a página:", error);
+            return res.status(500).send("Erro interno");
+        }
+    }
+
     static async renderCreateProduto(req, res) {
         try {
-            return res.sendFile(
-                path.join(__dirname, "views", "cadastrar-produto.html"),
-            );
+            return res.render("cadastrar-produto", { erro: null });
         } catch (error) {
             console.error("Erro ao carregar a página:", error);
             return res.status(500).send("Erro interno");

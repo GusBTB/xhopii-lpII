@@ -853,3 +853,13 @@ header #cabecalho-logout a{
     font-size: 1.875rem;
     color: rgb(251,86,48);
 }
+/* Foto de perfil nas listagens de cliente e funcionário */
+.foto-perfil {
+    width: 96px;
+    height: 96px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid #ddd;
+    display: block;
+    margin-bottom: 8px;
+}

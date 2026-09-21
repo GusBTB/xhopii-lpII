@@ -2,38 +2,30 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="../css/style.css">
-    <link rel="icon" href="../img/logo.png" type="image/png">
-    <title>Xhopii - Ver Produtos</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="icon" href="/img/logo.png" type="image/png">
+    <title>Xhopii - Cadastro Produto</title>
 </head>
 <body>
 
-    <header>
-        <section id="cabecalho-logo">
-            <img src="../img/logo.png">
-            <h1>Xhopii</h1>
-        </section>
-        <section id="cabecalho-logout">
-            <a href="login.html">Sair</a>
-        </section>
-    </header>
+<%- include('partials/menu') %>
 
-    <nav class="menu-horizontal">
-        <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/clientes/cadastrar">Cadastro Cliente</a></li>
-            <li><a href="/funcionario/cadastrar">Cadastro Funcionário</a></li>
-            <li><a href="/produto/cadastrar">Cadastro Produto</a></li>
-            <li><a href="/clientes">Ver Clientes</a></li>
-            <li><a href="#">Ver Funcionários</a></li>
-            <li><a href="/produtos/visualizar">Ver Produtos</a></li>
-        </ul>
-    </nav>
-
-    <section class="conteudo-visualizar">
-        <section class="conteudo-visualizar-box">
-            <h1>Funcionários</h1>
-            <!-- INSERIR AQUI O RESULTADO DA CONSULTA POR FUNCIONÁRIOS -->
+    <section class="conteudo-cadastro">
+        <section class="conteudo-formulario-cadastro">
+            <form method="POST" action="/api/produtos">
+                <% if (typeof erro !== "undefined" && erro) { %>
+                    <p class="mensagem-erro" style="color:#d0021b;font-weight:bold;"><%= erro %></p>
+                <% } %>
+                <label>Cadastrar Produto</label>
+                <input type="text" placeholder="Nome" name="nome">
+                <input type="text" placeholder="Fabricante" name="fabricante">
+                <input type="text" placeholder="Descrição" name="descricao">
+                <input type="text" placeholder="Valor" name="valor">
+                <input type="text" placeholder="Quantidade" name="quantidade">
+                <label id="lbl-arquivo" for="files">Selecionar foto do produto:</label>
+                <input type="file" name="inputFoto">
+                <input id="botao" type="submit" value="Cadastrar">
+            </form>
         </section>
     </section>
 

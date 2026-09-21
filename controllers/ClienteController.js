@@ -1,8 +1,20 @@
-import path from "path";
-import __dirname from "../utils/pathUtils.js";
+import mongoose from "mongoose";
 import Cliente from "../models/Cliente.js";
+import { ehFormulario } from "../utils/requestUtils.js";
+import { montarFoto } from "../middlewares/uploadMiddleware.js";
 
 export default class ClienteController {
+    // Erro vindo de formulario volta para a tela; erro de API volta como JSON.
+    static responderErro(req, res, status, mensagem) {
+        if (ehFormulario(req)) {
+            return res
+                .status(status)
+                .render("cadastrar-cliente", { erro: mensagem });
+        }
+
+        return res.status(status).json({ message: mensagem });
+    }
+
     static converterData(data) {
         if (data === undefined || data === null) {
             return undefined;
@@ -86,6 +98,11 @@ export default class ClienteController {
     static async getClienteById(req, res) {
         try {
             const { id } = req.params; //Parâmetros URL
+
+            if (!mongoose.isValidObjectId(id)) {
+                return res.status(400).json({ message: "ID inválido" });
+            }
+
             const clienteExistente = await Cliente.findById(id);
 
             if (!clienteExistente) {
@@ -114,29 +131,48 @@ export default class ClienteController {
                 senha,
             } = req.body;
 
+            // O multer nao derruba a requisicao: ele sinaliza aqui.
+            if (req.erroUpload) {
+                return ClienteController.responderErro(
+                    req,
+                    res,
+                    400,
+                    req.erroUpload,
+                );
+            }
+
             const dataNascimentoConvertida =
                 ClienteController.converterData(dataNascimento);
 
             if (dataNascimentoConvertida === null) {
-                return res.status(400).json({
-                    message: "Data de nascimento inválida",
-                });
+                return ClienteController.responderErro(
+                    req,
+                    res,
+                    400,
+                    "Data de nascimento inválida",
+                );
             }
 
             const clienteComMesmoCpf = await Cliente.findByCpf(cpf);
 
             if (clienteComMesmoCpf) {
-                return res
-                    .status(400)
-                    .json({ message: "Já existe um cliente com esse CPF" });
+                return ClienteController.responderErro(
+                    req,
+                    res,
+                    400,
+                    "Já existe um cliente com esse CPF",
+                );
             }
 
             const clienteComMesmoEmail = await Cliente.findByEmail(email);
 
             if (clienteComMesmoEmail) {
-                return res
-                    .status(400)
-                    .json({ message: "Já existe um cliente com esse e-mail" });
+                return ClienteController.responderErro(
+                    req,
+                    res,
+                    400,
+                    "Já existe um cliente com esse e-mail",
+                );
             } else {
                 const novoCliente = new Cliente(
                     nome,
@@ -146,13 +182,27 @@ export default class ClienteController {
                     telefone,
                     email,
                     senha,
+                    montarFoto(req.file),
                 );
-                await novoCliente.save();
-                return res.status(201).json(novoCliente);
+                const clienteSalvo = await novoCliente.save();
+
+                // Cadastro e publico: o visitante recem-criado ainda nao tem
+                // token, entao e enviado para o login em vez da listagem.
+                if (ehFormulario(req)) {
+                    return res.redirect("/login");
+                }
+
+                clienteSalvo.senha = undefined;
+                return res.status(201).json(clienteSalvo);
             }
         } catch (error) {
             console.error("Erro ao cadastrar cliente", error);
-            return res.status(500).send("Erro interno");
+            return ClienteController.responderErro(
+                req,
+                res,
+                500,
+                "Erro interno ao cadastrar cliente",
+            );
         }
     }
 
@@ -160,6 +210,10 @@ export default class ClienteController {
         try {
             const { id } = req.params;
             const dados = { ...req.body };
+
+            if (!mongoose.isValidObjectId(id)) {
+                return res.status(400).json({ message: "ID inválido" });
+            }
 
             if (
                 Object.prototype.hasOwnProperty.call(dados, "dataNascimento")
@@ -174,6 +228,16 @@ export default class ClienteController {
                 }
 
                 dados.dataNascimento = dataNascimentoConvertida;
+            }
+
+            if (req.erroUpload) {
+                return res.status(400).json({ message: req.erroUpload });
+            }
+
+            const fotoEnviada = montarFoto(req.file);
+
+            if (fotoEnviada) {
+                dados.foto = fotoEnviada;
             }
 
             const clienteAtualizado = await Cliente.update(id, dados);
@@ -195,6 +259,11 @@ export default class ClienteController {
     static async deleteCliente(req, res) {
         try {
             const { id } = req.params;
+
+            if (!mongoose.isValidObjectId(id)) {
+                return res.status(400).json({ message: "ID inválido" });
+            }
+
             const clienteExcluido = await Cliente.delete(id);
 
             if (!clienteExcluido) {
@@ -211,12 +280,35 @@ export default class ClienteController {
         }
     }
 
+    // Serve a imagem gravada no MongoDB.
+    static async getFotoCliente(req, res) {
+        try {
+            const { id } = req.params;
+
+            if (!mongoose.isValidObjectId(id)) {
+                return res.status(400).json({ message: "ID inválido" });
+            }
+
+            const cliente = await Cliente.findFoto(id);
+
+            if (!cliente || !cliente.foto || !cliente.foto.data) {
+                return res.status(404).json({ message: "Foto não encontrada" });
+            }
+
+            res.set("Content-Type", cliente.foto.contentType);
+            return res.send(cliente.foto.data);
+        } catch (error) {
+            console.error("Erro ao carregar a foto do cliente:", error);
+            return res
+                .status(500)
+                .json({ message: "Erro interno ao buscar a foto" });
+        }
+    }
+
     //Implementação dos Renders das Páginas WEB
     static async renderCreateCliente(req, res) {
         try {
-            return res.sendFile(
-                path.join(__dirname, "views", "cadastrar-cliente.html"),
-            );
+            return res.render("cadastrar-cliente", { erro: null });
         } catch (error) {
             console.error("Erro ao carregar a página:", error);
             return res.status(500).send("Erro interno");

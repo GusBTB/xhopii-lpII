@@ -1,18 +1,20 @@
 import bcrypt from "bcryptjs";
-import ClienteModel from "./ClienteSchema.js";
+import FuncionarioModel from "./FuncionarioSchema.js";
 
 // A imagem fica no documento, mas e pesada: as listagens trazem so o
 // contentType, o que ja permite saber se existe foto. O binario e buscado
 // sob demanda por findFoto().
 const SEM_BINARIO = "-foto.data";
 
-export default class Cliente {
+export default class Funcionario {
     constructor(
         nome,
         sobrenome,
         cpf,
         dataNascimento,
         telefone,
+        cargo,
+        salario,
         email,
         senha,
         foto,
@@ -22,50 +24,54 @@ export default class Cliente {
         this.cpf = cpf;
         this.dataNascimento = dataNascimento;
         this.telefone = telefone;
+        this.cargo = cargo;
+        this.salario = salario;
         this.email = email;
         this.senha = senha;
         this.foto = foto;
     }
 
     async save() {
-        const cliente = new ClienteModel({
+        const funcionario = new FuncionarioModel({
             nome: this.nome,
             sobrenome: this.sobrenome,
             cpf: this.cpf,
             dataNascimento: this.dataNascimento,
             telefone: this.telefone,
+            cargo: this.cargo,
+            salario: this.salario,
             email: this.email,
             senha: this.senha,
             foto: this.foto,
         });
 
-        return await cliente.save();
+        return await funcionario.save();
     }
 
     static async findAll() {
-        return await ClienteModel.find().select(SEM_BINARIO);
+        return await FuncionarioModel.find().select(SEM_BINARIO);
     }
 
     static async findById(id) {
-        return await ClienteModel.findById(id).select(SEM_BINARIO);
+        return await FuncionarioModel.findById(id).select(SEM_BINARIO);
     }
 
     // Traz apenas a imagem, usada pela rota que serve a foto.
     static async findFoto(id) {
-        return await ClienteModel.findById(id).select("foto");
+        return await FuncionarioModel.findById(id).select("foto");
     }
 
     static async findByCpf(cpf) {
-        return await ClienteModel.findOne({ cpf });
+        return await FuncionarioModel.findOne({ cpf });
     }
 
     static async findByEmail(email) {
-        return await ClienteModel.findOne({ email });
+        return await FuncionarioModel.findOne({ email });
     }
 
     // Usado apenas no login: traz a senha, que o schema esconde por padrao
     static async findByEmailComSenha(email) {
-        return await ClienteModel.findOne({ email }).select("+senha");
+        return await FuncionarioModel.findOne({ email }).select("+senha");
     }
 
     static async update(id, dados) {
@@ -79,12 +85,12 @@ export default class Cliente {
             );
         }
 
-        return await ClienteModel.findByIdAndUpdate(id, dadosParaGravar, {
+        return await FuncionarioModel.findByIdAndUpdate(id, dadosParaGravar, {
             new: true,
         });
     }
 
     static async delete(id) {
-        return await ClienteModel.findByIdAndDelete(id);
+        return await FuncionarioModel.findByIdAndDelete(id);
     }
 }

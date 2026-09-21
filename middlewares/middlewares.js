@@ -6,12 +6,15 @@ import helmet from 'helmet';
 import compression from 'compression';
 import rateLimit from 'express-rate-limit';
 import morgan from 'morgan';
+import cookieParser from 'cookie-parser';
 
 //Middlewares
 const staticMiddleware = express.static(path.join(__dirname, 'assets'));
 
 const urlencodedMiddleware = express.urlencoded({ extended: true});
 const jsonMiddleware = express.json();
+
+const cookieParserMiddleware = cookieParser();
 
 const securityMiddleware = helmet();
 
@@ -30,6 +33,7 @@ export {
     staticMiddleware,
     urlencodedMiddleware,
     jsonMiddleware,
+    cookieParserMiddleware,
     securityMiddleware,
     compressionMiddlewware,
     rateLimitMiddleware,

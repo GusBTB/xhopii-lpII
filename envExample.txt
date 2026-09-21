@@ -1,6 +1,10 @@
-#.env = armazena variáveis de configuração e credenciais sensíveis da aplicação.
+# Copie este arquivo para .env e preencha os valores.
+
+# Porta em que o servidor Express sobe
 PORT=8080
+
+# String de conexao do MongoDB
 MONGODB_URI=mongodb://localhost:27018/xhopii
-#MONGODB_URI=mongodb://admin:12345@localhost:27018/xhopii
-#MONGODB_URI=mongodb://admin:${MONGO_PASSWORD}@localhost:27018/xhopii
-#MONGODB_URI=mongodb+srv://brunoslima4:12345@cluster-teste.qfy6l.mongodb.net/?retryWrites=true&w=majority&appName=Cluster-teste
+
+# Segredo usado para assinar os tokens JWT - troque em qualquer ambiente real
+JWT_SECRET=troque_este_valor

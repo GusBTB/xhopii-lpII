@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="/css/style.css">
     <link rel="icon" href="/img/logo.png" type="image/png">
-    <title>Xhopii - Ver Clientes</title>
+    <title>Xhopii - Ver Funcionários</title>
 </head>
 <body>
 
@@ -12,19 +12,21 @@
 
     <section class="conteudo-visualizar">
         <section class="conteudo-visualizar-box">
-            <h1>Clientes</h1>
-            <% clientes.forEach(cliente => { %>
+            <h1>Funcionários</h1>
+            <% funcionarios.forEach(funcionario => { %>
                 <section class="conteudo-bloco">
-                    <% if (cliente.foto && cliente.foto.contentType) { %>
-                        <img class="foto-perfil" src="/clientes/<%= cliente._id %>/foto" alt="Foto de <%= cliente.nome %>">
+                    <% if (funcionario.foto && funcionario.foto.contentType) { %>
+                        <img class="foto-perfil" src="/funcionarios/<%= funcionario._id %>/foto" alt="Foto de <%= funcionario.nome %>">
                     <% } else { %>
                         <img class="foto-perfil" src="/img/logo.png" alt="Sem foto">
                     <% } %>
-                    <h2><%= cliente.nome %> <%= cliente.sobrenome %></h2>
-                    <p>CPF: <%= cliente.cpf %></p>
-                    <p>Data Nascimento: <%= cliente.dataNascimento %></p>
-                    <p>Telefone: <%= cliente.telefone %></p>
-                    <p>E-mail: <%= cliente.email %></p>
+                    <h2><%= funcionario.nome %> <%= funcionario.sobrenome %></h2>
+                    <p>CPF: <%= funcionario.cpf %></p>
+                    <p>Data Nascimento: <%= funcionario.dataNascimento %></p>
+                    <p>Telefone: <%= funcionario.telefone %></p>
+                    <p>Cargo: <%= funcionario.cargo %></p>
+                    <p>Salário: <%= funcionario.salario %></p>
+                    <p>E-mail: <%= funcionario.email %></p>
                 </section>
             <% }); %>
         </section>
